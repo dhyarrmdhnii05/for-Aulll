@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNBT Survival Kit (Edisi Kiyowo)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Baloo 2', cursive; /* Font yang lebih cute */
+            background-color: #f8fafc; /* Abu-abu sangat muda/putih krem */
+            color: #4b5563; /* Abu-abu gelap untuk teks */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-x: hidden; /* Mencegah scroll horizontal */
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: #ffffff; /* Putih bersih */
+            border-radius: 30px; /* Lebih rounded */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            box-sizing: border-box;
+            border: 2px solid #e2e8f0; /* Border tipis untuk kesan lebih rapi */
+            position: relative;
+            overflow: hidden; /* Untuk background pattern */
+        }
+
+        /* Cute background pattern */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            right: -50px;
+            bottom: -50px;
+            background: radial-gradient(circle, #f0f4f8 10%, transparent 10%) center / 40px 40px,
+                        radial-gradient(circle, #e0e7ef 10%, transparent 10%) 20px 20px / 40px 40px;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1; /* Pastikan konten di atas pattern */
+        }
+
+        .section-title {
+            font-weight: 700;
+            color: #64748b; /* Abu-abu kebiruan yang soft */
+            margin-bottom: 25px;
+            font-size: 2rem; /* Lebih besar */
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .section-title::after {
+            content: '💖'; /* Ikon kecil di bawah judul */
+            display: block;
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+
+        .card {
+            background-color: #fefefe; /* Putih super bersih */
+            border-radius: 20px; /* Lebih rounded */
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0; /* Border lebih soft */
+        }
+        .button-kiyowo {
+            background-color: #a78bfa; /* Lavender ceria */
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px; /* Pill shape */
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.25rem;
+            box-shadow: 0 5px 15px rgba(167, 139, 250, 0.4);
+            letter-spacing: 0.05em;
+        }
+        .button-kiyowo:hover {
+            background-color: #8b5cf6; /* Lavender lebih tua */
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.5);
+        }
+        .button-kiyowo-secondary {
+            background-color: #fbcfe8; /* Pink pastel */
+            color: #881337; /* Maroon gelap */
+            padding: 15px 30px;
+            border-radius: 50px; /* Pill shape */
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.25rem;
+            box-shadow: 0 5px 15px rgba(251, 207, 232, 0.4);
+            letter-spacing: 0.05em;
+        }
+        .button-kiyowo-secondary:hover {
+            background-color: #f9a8d4; /* Pink lebih gelap */
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(249, 168, 212, 0.5);
+        }
+
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.95); /* Lebih terang */
+            color: #4b5563;
+            padding: 30px;
+            border-radius: 25px; /* Lebih rounded */
+            z-index: 1000;
+            text-align: center;
+            display: none; /* Hidden by default */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            font-size: 1.2rem;
+            border: 2px solid #a78bfa; /* Border warna pastel */
+        }
+        .message-box button {
+            background-color: #a78bfa;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 15px; /* Lebih rounded */
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-size: 1rem;
+        }
+        .message-box button:hover {
+            background-color: #8b5cf6;
+            transform: translateY(-2px);
+        }
+
+        /* Confetti effect */
+        .confetti {
+            position: absolute;
+            width: 12px; /* Lebih besar */
+            height: 12px; /* Lebih besar */
+            background-color: var(--confetti-color);
+            opacity: 0;
+            animation: confetti-fall 3s ease-out forwards;
+            border-radius: var(--confetti-border-radius); /* Bisa bulat atau kotak */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        @keyframes confetti-fall {
+            0% { transform: translate(var(--x), var(--y)) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--x-end), var(--y-end)) rotate(720deg); opacity: 0; }
+        }
+
+        /* Typewriter effect */
+        .typewriter-text {
+            overflow: hidden;
+            white-space: pre-wrap; /* Memungkinkan text wrap */
+            margin: 0 auto;
+            letter-spacing: .05em;
+            border-right: .15em solid #a78bfa; /* Warna cursor pastel */
+            width: 0;
+            animation: typing 3.5s steps(40, end) forwards,
+                       blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #a78bfa; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                border-radius: 20px;
+            }
+            .section-title {
+                font-size: 1.75rem;
+            }
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+            .button-kiyowo, .button-kiyowo-secondary {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            .message-box {
+                font-size: 1rem;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="text-center mb-10">
+                <img src="hi.jpg" alt="Us" class="mx-auto mb-6 w-40 h-40 object-cover rounded-full shadow-lg border-4 border-white transform hover:scale-105 transition-transform duration-300">
+                <h1 class="text-5xl font-extrabold text-gray-800 mb-3 leading-tight">
+                    Haii Aull! xixi 
+                </h1>
+                <p class="text-xl text-gray-600 mb-8 px-4">
+                    Buat Aulia Farras Utami yang besok mau liat hasil SNBT. Jangan panik, tetep napas yaaa! Kamu udah hebat banget!
+                </p>
+                <button id="enterButton" class="button-kiyowo">
+                    Klik disini yaa! <i class="fas fa-heart ml-3 text-pink-300"></i>
+                </button>
+            </div>
+
+            <div class="card" id="prayerCard" style="display:none;">
+    <h3 class="font-semibold text-2xl mb-4 text-gray-700">
+        Pesan dari Dhiya yang manis jodohnya kak Farhan Jijima <i class="fas fa-hand-holding-heart ml-2 text-pink-400"></i>
+    </h3>
+                    <p id="typewriterText" class="typewriter-text text-gray-700 leading-relaxed text-lg px-2 overflow-hidden border-r-2 border-transparent pr-1">
+                       Hai Auulll! 🫶💫 Apa pun hasilnya besok, please always remember: you’ve come so far, and that’s already something to be super proud of. Kamu udah berjuang keras, ngelewatin banyak hal, dan nyampe di titik ini tuh bukan hal kecil. It’s a huge achievement! I’m honestly so, so proud of you! 💖 Aku tahu, pasti ada rasa deg-degan, harap-harap cemas, bahkan mungkin overthinking. Tapi coba tarik napas dalam, tenangin hati, dan yakinin diri kamu. You’ve done your best, dan Tuhan pasti kasih yang terbaik juga. 🤲✨
+
+Semoga hasilnya sesuai dengan yang kamu impiin ya, semoga semua perjuangan kamu berbuah manis. Aamiin ya Allah. Tapi kalaupun belum rezekinya sekarang, jangan sedih terlalu lama ya. Kadang jalan kita emang suka muter dulu, tapi percaya deh, ending-nya bakal tetep indah. Karena kamu hebat, dan hal-hal hebat pasti akan datang ke orang hebat juga.
+
+I’ll always be here for you, cheering you on no matter what. You’re not alone, and you’ll never be. Apapun hasilnya, our friendship stays solid andd bestie abis, dong! 😄 Dan jangan lupa, tetep ajak-ajak GO, yaw(wkwk smanss bgt). Tapiii… kalo keterima sih, yaa harus siap-siap traktir, mhehehe
+
+So chin up, smile wide, and face tomorrow with all your light. I’m rooting for youu, always! 💐💪
+Good luck, Auulll! You’ve got this. 💖🌈✨
+
+With lots of hope, prayers, and endless support,<br>
+💌 Dhiyaa 🌟
+                    </p>
+                </div>
+
+                   <div id="contentSections" class="hidden">
+                <h2 class="section-title mt-12 mb-8">I foOund these for you!! </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="card">
+                        <h3 class="font-semibold text-2xl mb-4 text-gray-700">Look at heree<i class="far fa-grin-beam ml-2 text-yellow-500"></i></h3>
+                        <p class="text-gray-600 mb-4">Coba lihat gambar di bawah ini, yes it is!</p>
+                        <img src="1.png" alt="Quote Placeholder" class="w-full rounded-xl cursor-pointer hover:shadow-xl transition-shadow duration-300 border-2 border-gray-200" onclick="showMessage('Moga-moga gambar ini bikin kamu tenang yaps! Senyum itu wajib, apapun hasilnya! 😊', 'star')">
+                    </div>
+                    <div class="card">
+                        <h3 class="font-semibold text-2xl mb-4 text-gray-700">Read this slowly yaa <i class="fas fa-headphones-alt ml-2 text-blue-400"></i></h3>
+                        <p class="text-gray-600 mb-4">Trust the process</p>
+                        <img src="2.jpg" alt="Quote Placeholder" class="w-full rounded-xl cursor-pointer hover:shadow-xl transition-shadow duration-300 border-2 border-gray-200" onclick="showMessage('Moga-moga quotes ini bikin kamu ikhlas dan lebih semangat yaa! Senyum itu wajib, apapun hasilnya! 😊', 'star')">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="font-semibold text-2xl mb-4 text-gray-700"> List Support untuk Auull <i class="fas fa-list-ul ml-2 text-purple-400"></i></h3>
+                    <ul class="list-none text-gray-600 space-y-3">
+                        <li><i class="fas fa-hand-sparkles mr-3 text-pink-300 text-xl"></i>Hugee from a farrr🤗 (biar gak tegang)</li>
+                        <li><i class="fas fa-brain mr-3 text-blue-300 text-xl"></i>Apapun hasilnya, aku bangga banget sama kamu!</li>
+                        <li><i class="fas fa-thumbs-up mr-3 text-green-300 text-xl"></i>Aku doain yang terbaik buat kamu, semoga semua perjuangan kamu nggak sia-sia.</li>
+                        <li><i class="fas fa-ice-cream mr-3 text-red-300 text-xl"></i>Whatever the result is, you’re still amazing and worthy</li>
+                    </ul>
+                </div>
+
+                <div class="card text-center">
+                    <h3 class="font-semibold text-2xl mb-4 text-gray-700"> Special Prayer Capsule for Auull 💫<i class="fas fa-gift ml-2 text-orange-400"></i></h3>
+                    <p>'Ya Allah,
+
+Please, if this is her time, let beautiful things unfold for her. Grant her the good news she’s been waiting for. And if it's not yet her moment, please let her heart find peace in Your greater plan. Beri ia kekuatan untuk tetap melangkah, meski jalannya tak selalu mudah.
+
+Lindungi hatinya dari kecewa yang berlarut, dan gantikan setiap lelah dengan kelegaan, setiap tangis dengan harapan. Fill her days with light, her steps with direction, and her soul with comfort. Let her know that she’s enough, that her efforts are never wasted in Your eyes. 🙏
+
+And for us, her friends, let us always be a source of strength for her. Teach us to remind her how valuable she is, with or without results. Help us celebrate her wins, and hold her through the losses, without judgment, only love. 💞
+
+May her journey ahead be blessed with kindness, growth, and unexpected joy. Whatever happens, don’t let her forget how proud we are of her. Aamiin ya Rabbal ‘Alamiin</p>
+                </div>
+
+                <script>
+  function showMessage(message, icon) {
+    const box = document.getElementById('messageBox');
+    box.innerHTML = `<p>${message.replace(/\n/g, '<br>')}</p>`;
+    box.style.display = 'block';
+  }
+</script>
+
+
+                <h2 class="section-title mt-12 mb-8">Gimana Hasilnya yaa besok?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                    <button id="lolosButton" class="button-kiyowo">
+                        YEY, AKU LOLOS! 
+                    </button>
+                    <button id="belumRezekiButton" class="button-kiyowo-secondary">
+                        LOLOSS DONGG!
+                    </button>
+                </div>
+
+                <footer class="text-center text-gray-500 text-sm mt-12 mb-4">
+                    With all my prayers and warmest hugs, <br> Dhiya
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <div id="messageBox" class="message-box">
+        <p id="messageText" class="mb-4"></p>
+        <button onclick="hideMessage()">Oke, Siap!</button>
+    </div>
+
+    <script>
+        const confettiColors = ['#fbcfe8', '#a78bfa', '#fee2e2', '#bfdbfe', '#d1fae5']; // Pastel colors
+        const confettiShapes = ['circle', 'square', 'heart', 'star']; // Tambahan bentuk confetti
+
+        // Function to show custom message box
+        function showMessage(message, iconType = 'default') {
+            const messageTextElement = document.getElementById('messageText');
+            messageTextElement.innerHTML = message; // Allow HTML in message
+
+            // Add an icon based on type
+            let iconHtml = '';
+            if (iconType === 'star') {
+                iconHtml = '<i class="fas fa-star text-yellow-400 text-3xl mb-3 animate-pulse"></i><br>';
+            } else if (iconType === 'heart') {
+                iconHtml = '<i class="fas fa-heart text-red-400 text-3xl mb-3 animate-bounce"></i><br>';
+            }
+            messageTextElement.innerHTML = iconHtml + message;
+
+
+            document.getElementById('messageBox').style.display = 'block';
+        }
+
+        // Function to hide custom message box
+        function hideMessage() {
+            document.getElementById('messageBox').style.display = 'none';
+        }
+
+        // Typewriter effect for personal message
+        function typeWriter(elementId, text, i, callback) {
+            const element = document.getElementById(elementId);
+            if (i < text.length) {
+                // Check for emojis or special characters that might be more than one char
+                let char = text.substring(i, i + 1);
+                if (char === '😉' || char === '❤️') { // Example for multi-char emojis
+                    element.innerHTML += char;
+                    i++; // Advance by 1 for simplicity, though emojis can be 2 chars
+                } else {
+                    element.innerHTML += char;
+                }
+                setTimeout(() => typeWriter(elementId, text, i + 1, callback), 50); // Typing speed
+            } else if (callback) {
+                // Ensure cursor stops blinking after typing
+                element.style.borderRight = 'none';
+                callback();
+            }
+        }
+
+        // Confetti effect
+        function createConfetti(x, y) {
+            const confettiCount = 60; // Lebih banyak confetti
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.setProperty('--x', `${x}px`);
+                confetti.style.setProperty('--y', `${y}px`);
+                confetti.style.setProperty('--x-end', `${x + (Math.random() - 0.5) * 600}px`); // Sebar lebih jauh
+                confetti.style.setProperty('--y-end', `${y + (Math.random() - 0.5) * 600}px`); // Sebar lebih jauh
+                confetti.style.left = `${x}px`;
+                confetti.style.top = `${y}px`;
+
+                // Random color and shape
+                confetti.style.setProperty('--confetti-color', confettiColors[Math.floor(Math.random() * confettiColors.length)]);
+                const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
+                if (shape === 'circle') {
+                    confetti.style.setProperty('--confetti-border-radius', '50%');
+                } else if (shape === 'square') {
+                    confetti.style.setProperty('--confetti-border-radius', '0');
+                } else if (shape === 'heart') {
+                    confetti.innerHTML = '❤️'; // Unicode heart
+                    confetti.style.width = '20px';
+                    confetti.style.height = '20px';
+                    confetti.style.fontSize = '1.2rem';
+                    confetti.style.backgroundColor = 'transparent';
+                } else if (shape === 'star') {
+                    confetti.innerHTML = '⭐'; // Unicode star
+                    confetti.style.width = '20px';
+                    confetti.style.height = '20px';
+                    confetti.style.fontSize = '1.2rem';
+                    confetti.style.backgroundColor = 'transparent';
+                }
+
+
+                document.body.appendChild(confetti);
+
+                confetti.addEventListener('animationend', () => {
+                    confetti.remove();
+                });
+            }
+        }
+
+
+        // Event listener for the main "MASUK" button
+        document.getElementById('enterButton').addEventListener('click', function() {
+            document.getElementById('enterButton').style.display = 'none'; // Hide the enter button
+            document.getElementById('contentSections').classList.remove('hidden'); // Show content
+            // Start typewriter effect after content is shown
+            const personalMessageElement = document.getElementById('typewriterText');
+            // Store original text before clearing, if you want to reuse it.
+            // For this version, we set innerHTML directly below to restart typewriter.
+            const originalText = personalMessageElement.textContent.trim(); // Use textContent to get raw text
+            personalMessageElement.innerHTML = ''; // Clear text for typing effect
+            typeWriter('typewriterText', originalText, 0);
+        });
+
+        // Event listener for "AKU LOLOS!" button
+        document.getElementById('lolosButton').addEventListener('click', function(event) {
+            showMessage('Gila, keren banget kamu! Jangan lupa syukuran ya! 🎉🥳', 'default'); // Default icon for confetti msg
+            createConfetti(event.clientX, event.clientY); // Create confetti at click position
+        });
+
+        // Event listener for "BELUM REZEKI SNBT" button
+        document.getElementById('belumRezekiButton').addEventListener('click', function() {
+            showMessage('Santai aja, Sayang! Dunia gak selebar daun kelor, kok. Masih banyak jalan lain! Yuk, kita ngopi sambil cari ide baru! 🤗', 'default');
+        });
+
+        // Initial setup for the page to show only the hero section
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure content sections are hidden on load until the enter button is clicked
+            document.getElementById('contentSections').classList.add('hidden');
+        });
+
+    </script>
+
+    <script>
+    const button = document.getElementById('enterButton');
+    const card = document.getElementById('prayerCard');
+
+    button.addEventListener('click', () => {
+        // Tampilkan card saat tombol diklik
+        card.style.display = 'block';
+        
+        // (Optional) Sembunyikan tombol setelah diklik agar gak bisa diklik lagi
+        button.style.display = 'none';
+    });
+</script>
+</body>
+</html>
